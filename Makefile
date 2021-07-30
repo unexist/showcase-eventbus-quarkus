@@ -41,7 +41,7 @@ export TODO_KAFKA_CE
 .PHONY: docker
 docker:
 	@lazydocker -f docker/docker-compose-kafka.yaml
-Ad
+
 # Tools
 todo-quarkus:
 	@echo $$JSON_TODO_QUARKUS | bash
