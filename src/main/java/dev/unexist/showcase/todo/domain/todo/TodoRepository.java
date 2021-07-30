@@ -1,5 +1,5 @@
 /**
- * @package Showcase-Microstream-Helidon
+ * @package Showcase-Eventbus-Quarkus
  *
  * @file Todo repository interface
  * @copyright 2020-2021 Christoph Kappel <christoph@unexist.dev>

@@ -1,5 +1,5 @@
 /**
- * @package Showcase-Microstream-Helidon
+ * @package Showcase-Eventbus-Quarkus
  *
  * @file Todo class and aggregate root
  * @copyright 2020-2021 Christoph Kappel <christoph@unexist.dev>

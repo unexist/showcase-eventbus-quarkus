@@ -1,5 +1,5 @@
 /**
- * @package Showcase-Microstream-Helidon
+ * @package Showcase-Eventbus-Quarkus
  *
  * @file Todo repository
  * @copyright 2020-2021 Christoph Kappel <christoph@unexist.dev>
@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

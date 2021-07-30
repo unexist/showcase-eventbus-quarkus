@@ -3,7 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>dev.unexist.showcase</groupId>
     <artifactId>showcase-eventbus-quarkus</artifactId>
     <version>0.1</version>
 
@@ -14,8 +13,26 @@
     </parent>
 
     <properties>
+        <smallrye-reactive.version>3.8.0</smallrye-reactive.version>
     </properties>
 
     <dependencies>
+        <!-- Quarkus -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-vertx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>io.smallrye.reactive</groupId>
+            <artifactId>smallrye-reactive-messaging-in-memory</artifactId>
+            <version>${smallrye-reactive.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

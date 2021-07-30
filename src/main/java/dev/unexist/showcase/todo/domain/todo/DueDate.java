@@ -1,5 +1,5 @@
 /**
- * @package Showcase-Microstream-Helidon
+ * @package Showcase-Eventbus-Quarkus
  *
  * @file DueDate class
  * @copyright 2020-2021 Christoph Kappel <christoph@unexist.dev>
