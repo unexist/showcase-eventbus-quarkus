@@ -17,12 +17,12 @@ curl -X 'POST' \
 endef
 export JSON_TODO_QUARKUS
 
-define TODO_KAFKA_CE
+define TODO_KAFKA_CE1
 echo 'test%{
   "specversion": "0.3",
   "id": "21627e26-31eb-43e7-8343-92a696fd96b1",
   "source": "",
-  "type": "todo_in",
+  "type": "todo_in1",
   "time": "2021-07-23T12:02:23.812262+02:00[Europe/Berlin]",
   "data": {
     "description": "string",
@@ -35,7 +35,28 @@ echo 'test%{
   }
 }' | kafkacat -t todo_in -b localhost:$(RPK_PORT) -P -K%
 endef
-export TODO_KAFKA_CE
+export TODO_KAFKA_CE1
+
+define TODO_KAFKA_CE2
+echo 'test%{
+  "specversion": "0.3",
+  "id": "21627e26-31eb-43e7-8343-92a696fd96b1",
+  "source": "",
+  "type": "todo_in2",
+  "time": "2021-07-23T12:02:23.812262+02:00[Europe/Berlin]",
+  "data": {
+    "description": "string",
+    "done": false,
+    "dueDate": {
+      "due": "2022-05-08",
+      "start": "2022-05-07"
+    },
+    "title": "string"
+  }
+}' | kafkacat -t todo_in -b localhost:$(RPK_PORT) -P -K%
+endef
+export TODO_KAFKA_CE2
+
 
 # Docker
 .PHONY: docker
@@ -61,8 +82,11 @@ rpk-list: rpk-port
 	rpk topic --brokers localhost:$(RPK_PORT) list
 
 # Kafkacat
-kat-send: rpk-port
-	@echo $$TODO_KAFKA_CE | bash
+kat-send1: rpk-port
+	@echo $$TODO_KAFKA_CE1 | bash
+
+kat-send2: rpk-port
+	@echo $$TODO_KAFKA_CE2 | bash
 
 kat-listen-in: rpk-port
 	kafkacat -t todo_in -b localhost:$(RPK_PORT) -C
