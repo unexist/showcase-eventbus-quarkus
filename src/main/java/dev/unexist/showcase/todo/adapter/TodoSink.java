@@ -1,5 +1,5 @@
 /**
- * @package Quarkus-Kafka-Showcase
+ * @package Showcase-Eventbus-Quarkus
  *
  * @file Todo sink
  * @copyright 2020-2021 Christoph Kappel <christoph@unexist.dev>
