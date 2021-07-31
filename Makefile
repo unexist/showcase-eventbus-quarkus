@@ -57,6 +57,26 @@ echo 'test%{
 endef
 export TODO_KAFKA_CE2
 
+define TODO_KAFKA_CE3
+echo 'test%{
+  "specversion": "0.3",
+  "id": "21627e26-31eb-43e7-8343-92a696fd96b1",
+  "source": "",
+  "type": "todo_in3",
+  "time": "2021-07-23T12:02:23.812262+02:00[Europe/Berlin]",
+  "data": {
+    "description": "string",
+    "done": false,
+    "dueDate": {
+      "due": "2022-05-08",
+      "start": "2022-05-07"
+    },
+    "title": "string"
+  }
+}' | kafkacat -t todo_in -b localhost:$(RPK_PORT) -P -K%
+endef
+export TODO_KAFKA_CE3
+
 
 # Docker
 .PHONY: docker
@@ -87,6 +107,9 @@ kat-send1: rpk-port
 
 kat-send2: rpk-port
 	@echo $$TODO_KAFKA_CE2 | bash
+
+kat-send3: rpk-port
+	@echo $$TODO_KAFKA_CE3 | bash
 
 kat-listen-in: rpk-port
 	kafkacat -t todo_in -b localhost:$(RPK_PORT) -C
