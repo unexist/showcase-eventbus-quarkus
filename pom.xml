@@ -14,10 +14,15 @@
 
     <properties>
         <smallrye-reactive.version>3.8.0</smallrye-reactive.version>
+        <smallrye-reactive-messaging-vertx-eventbus.version>3.1.0</smallrye-reactive-messaging-vertx-eventbus.version>
     </properties>
 
     <dependencies>
         <!-- Quarkus -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-container-image-jib</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-vertx</artifactId>
@@ -25,6 +30,13 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+        </dependency>
+
+        <!-- Smallrye -->
+        <dependency>
+            <groupId>io.smallrye.reactive</groupId>
+            <artifactId>smallrye-reactive-messaging-vertx-eventbus</artifactId>
+            <version>${smallrye-reactive-messaging-vertx-eventbus.version}</version>
         </dependency>
 
         <!-- Testing -->
