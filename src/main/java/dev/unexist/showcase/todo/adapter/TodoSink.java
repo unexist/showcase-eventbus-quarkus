@@ -67,6 +67,11 @@ public class TodoSink {
 
         this.emitter.send(message);
     }
+
+    @Incoming("todo_in3")
+    public void consumeTodoIn3(String message) {
+        LOGGER.info("consumeTest3: {}", message);
+
+        this.emitter.send(message);
+    }
 }
-
-
