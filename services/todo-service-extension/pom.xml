@@ -14,8 +14,8 @@
     </parent>
 
     <properties>
-        <smallrye-reactive.version>3.8.0</smallrye-reactive.version>
         <smallrye-reactive-messaging-vertx-eventbus.version>3.1.0</smallrye-reactive-messaging-vertx-eventbus.version>
+        <event-split-extension.version>0.1</event-split-extension.version>
     </properties>
 
     <dependencies>
@@ -24,20 +24,27 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-container-image-jib</artifactId>
         </dependency>
-
-        <!-- Extension -->
         <dependency>
-            <groupId>dev.unexist.showcase</groupId>
-            <artifactId>eventbus-extension</artifactId>
-            <version>0.1</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-vertx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
         </dependency>
 
-        <!-- Testing -->
+        <!-- Smallrye -->
         <dependency>
             <groupId>io.smallrye.reactive</groupId>
-            <artifactId>smallrye-reactive-messaging-in-memory</artifactId>
-            <version>${smallrye-reactive.version}</version>
-            <scope>test</scope>
+            <artifactId>smallrye-reactive-messaging-vertx-eventbus</artifactId>
+            <version>${smallrye-reactive-messaging-vertx-eventbus.version}</version>
+        </dependency>
+
+        <!-- Smallrye -->
+        <dependency>
+            <groupId>dev.unexist.showcase</groupId>
+            <artifactId>event-split-extension</artifactId>
+            <version>${event-split-extension.version}</version>
         </dependency>
     </dependencies>
 </project>
