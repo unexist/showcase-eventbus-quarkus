@@ -4,7 +4,7 @@
          xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
     <groupId>dev.unexist.showcase</groupId>
-    <artifactId>eventbus-extension-parent</artifactId>
+    <artifactId>event-split-extension-parent</artifactId>
     <version>0.1</version>
     <packaging>pom</packaging>
 

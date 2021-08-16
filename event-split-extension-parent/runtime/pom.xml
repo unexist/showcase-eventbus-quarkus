@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>eventbus-extension</artifactId>
+    <artifactId>event-split-extension</artifactId>
 
     <parent>
         <groupId>dev.unexist.showcase</groupId>
-        <artifactId>eventbus-extension-parent</artifactId>
+        <artifactId>event-split-extension-parent</artifactId>
         <version>0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>

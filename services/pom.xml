@@ -15,7 +15,7 @@
 
     <modules>
         <module>todo-service</module>
+        <module>todo-service-connector</module>
         <module>todo-service-extension</module>
-        <module>eventbus-extension</module>
     </modules>
 </project>
