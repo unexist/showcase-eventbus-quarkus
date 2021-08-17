@@ -13,10 +13,16 @@
     </parent>
 
     <properties>
+        <!-- Smallrye -->
         <smallrye-reactive-messaging-vertx-eventbus.version>3.1.0</smallrye-reactive-messaging-vertx-eventbus.version>
+
+        <!-- Util -->
+        <apache-commons-lang.version>3.12.0</apache-commons-lang.version>
+        <jackson-databind.version>2.13.0-rc1</jackson-databind.version>
     </properties>
 
     <dependencies>
+        <!-- Quarkus -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
@@ -35,6 +41,18 @@
             <groupId>io.smallrye.reactive</groupId>
             <artifactId>smallrye-reactive-messaging-vertx-eventbus</artifactId>
             <version>${smallrye-reactive-messaging-vertx-eventbus.version}</version>
+        </dependency>
+
+        <!-- Util -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${apache-commons-lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
         </dependency>
     </dependencies>
 

@@ -13,19 +13,25 @@
     </parent>
 
     <dependencies>
+        <!-- Quarkus -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc-deployment</artifactId>
         </dependency>
         <dependency>
-            <groupId>dev.unexist.showcase</groupId>
-            <artifactId>event-split-extension</artifactId>
-            <version>${project.version}</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-vertx-deployment</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-junit5-internal</artifactId>
-            <scope>test</scope>
+            <artifactId>quarkus-smallrye-reactive-messaging-kafka-deployment</artifactId>
+        </dependency>
+
+        <!-- Runtime artifact -->
+        <dependency>
+            <groupId>dev.unexist.showcase</groupId>
+            <artifactId>event-split-extension</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

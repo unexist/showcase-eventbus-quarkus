@@ -1,0 +1,12 @@
+---
+name: "Event Splitter for Quarkus"
+description: "Splits a single event into multiple EventBus events"
+metadata:
+  keywords:
+    - "kafka"
+    - "eventbus"
+    - "cdc"
+  guide: "https://unexist.dev"
+  categories:
+    - "integration"
+  status: "experimental"
