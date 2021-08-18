@@ -11,32 +11,20 @@
 
 package dev.unexist.showcase.todo.adapter;
 
-import dev.unexist.showcase.eventsplit.EventSplitDispatcher;
 import io.quarkus.vertx.ConsumeEvent;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
-import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 @ApplicationScoped
 public class TodoSink {
     private static final Logger LOGGER = LoggerFactory.getLogger(TodoSink.class);
 
-    @Inject
-    EventSplitDispatcher dispatcher;
-
     @Channel("todo_out")
     Emitter<String> emitter;
-
-    @Incoming("todo_in")
-    public void consumeTodo(String message) {
-        LOGGER.info("consumeTodo: message={}, dispatcher={}", message, this.dispatcher);
-    }
-
 
     @ConsumeEvent("todo_in1")
     public void consumeTodoIn1(String message) {
