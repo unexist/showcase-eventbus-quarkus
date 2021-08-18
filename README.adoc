@@ -6,3 +6,5 @@ This project holds a showcase for vert.x eventbus mapping
 
 - https://smallrye.io/smallrye-reactive-messaging/smallrye-reactive-messaging/2/vertx-event-bus/vertx-event-bus.html
 - https://quarkus.io/guides/reactive-event-bus#configuring-the-address
+- https://smallrye.io/smallrye-reactive-messaging/smallrye-reactive-messaging/2.5/kafka/kafka.html#_dynamic_topic_names
+- https://stackoverflow.com/questions/66249352/dynamic-programmatically-topic-name-quarkus-smallrye-reactive-messaging-kafka
