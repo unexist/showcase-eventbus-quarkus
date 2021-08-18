@@ -14,38 +14,76 @@ package dev.unexist.showcase.eventsplit;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.kafka.client.consumer.KafkaConsumer;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.microprofile.reactive.messaging.Channel;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
 
 @ApplicationScoped
 public class EventSplitDispatcher {
     private final static ObjectMapper MAPPER = new ObjectMapper();
+    private KafkaConsumer<String, String> consumer;
+
+    @Inject
+    EventSplitRuntimeConfig config;
 
     @Inject
     EventBus bus;
 
-    EventSplitDispatcher() {
-        System.out.println("Init event dispatcher");
-    }
+    /**
+     * Start the dispatcher
+     **/
 
-    @Channel("todo_in")
-    private void dispatchEvents(String message) {
-        String typeName = StringUtils.EMPTY;
+    public void start() {
+        Vertx vertx = CDI.current().select(Vertx.class).get();
 
-        System.out.println("Handle message " + message);
+        System.out.println("Init event dispatcher: vertx=" + vertx + ", config=" + this.config);
 
-        try {
-            JsonNode json = MAPPER.readTree(message);
+        Objects.requireNonNull(this.config, "Config cannot be null");
 
-            typeName = json.get("type").asText();
-        } catch (JsonProcessingException e) {
-            System.out.println("Error reading JSON " + e);
+        /* Create consumer */
+        Map<String, String> consumerConfig = new HashMap<>();
+
+        consumerConfig.put("bootstrap.servers", this.config.brokerServer);
+        consumerConfig.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        consumerConfig.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        consumerConfig.put("group.id", "eventSplitGroup");
+        consumerConfig.put("auto.offset.reset", "earliest");
+        consumerConfig.put("enable.auto.commit", "false");
+
+        this.consumer = KafkaConsumer.create(vertx, consumerConfig);
+
+        /* Subscribe to topics */
+        if (null != this.config.topics) {
+            System.out.println("Subscribe to topics: " + this.config.topics);
+
+            this.consumer.subscribe(new HashSet<>(Arrays.asList(this.config.topics.split(","))));
         }
 
-        this.bus.send(typeName, message);
+        /* Set up handler */
+        this.consumer.handler(record -> {
+            String typeName = StringUtils.EMPTY;
+
+            System.out.println("Handle message " + record.value());
+
+            try {
+                JsonNode json = MAPPER.readTree(record.value());
+
+                typeName = json.get("type").asText();
+            } catch (JsonProcessingException e) {
+                System.out.println("Error reading JSON " + e);
+            }
+
+            this.bus.send(typeName, record.value());
+        });
     }
 }
