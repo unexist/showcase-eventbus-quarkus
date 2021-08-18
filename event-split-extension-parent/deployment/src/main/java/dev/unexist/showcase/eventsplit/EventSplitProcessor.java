@@ -11,6 +11,8 @@
 
 package dev.unexist.showcase.eventsplit;
 
+import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
+import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 
@@ -20,5 +22,10 @@ public class EventSplitProcessor {
     @BuildStep
     FeatureBuildItem feature() {
         return new FeatureBuildItem(EVENT_SPLIT);
+    }
+
+    @BuildStep
+    void build(BuildProducer<AdditionalBeanBuildItem> additionalBean) {
+        additionalBean.produce(AdditionalBeanBuildItem.unremovableOf(EventSplitDispatcher.class));
     }
 }

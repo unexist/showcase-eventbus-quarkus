@@ -17,11 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.eventbus.EventBus;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.reactive.messaging.Channel;
-import org.eclipse.microprofile.reactive.messaging.Message;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped
 public class EventSplitDispatcher {
@@ -30,15 +28,18 @@ public class EventSplitDispatcher {
     @Inject
     EventBus bus;
 
+    EventSplitDispatcher() {
+        System.out.println("Init event dispatcher");
+    }
+
     @Channel("todo_in")
-    private CompletionStage<Void> dispatchEvents(Message message) {
-        String payload = (String) message.getPayload();
+    private void dispatchEvents(String message) {
         String typeName = StringUtils.EMPTY;
 
-        System.out.println("Handle message " + payload);
+        System.out.println("Handle message " + message);
 
         try {
-            JsonNode json = MAPPER.readTree(payload);
+            JsonNode json = MAPPER.readTree(message);
 
             typeName = json.get("type").asText();
         } catch (JsonProcessingException e) {
@@ -46,7 +47,5 @@ public class EventSplitDispatcher {
         }
 
         this.bus.send(typeName, message);
-
-        return message.ack();
     }
 }
