@@ -87,14 +87,14 @@ public class EventSplitDispatcher {
     private void handleMessage(KafkaConsumerRecord<String, String> record) {
         String typeName = StringUtils.EMPTY;
 
-        System.out.println("Handle message " + record.value());
+        LOGGER.info("Handle message {}", record.value());
 
         try {
             JsonNode json = MAPPER.readTree(record.value());
 
             typeName = json.get("type").asText();
         } catch (JsonProcessingException e) {
-            System.out.println("Error reading JSON " + e);
+            LOGGER.info("Error reading JSON", e);
         }
 
         this.bus.send(typeName, record.value());
