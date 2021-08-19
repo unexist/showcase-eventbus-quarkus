@@ -8,7 +8,7 @@
  * This program can be distributed under the terms of the Apache License v2.0.
  * See the file LICENSE for details.
  **/
- 
+
 package dev.unexist.showcase.eventsplit;
 
 import io.quarkus.runtime.annotations.ConfigItem;
@@ -16,6 +16,7 @@ import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 
 @ConfigRoot(phase = ConfigPhase.RUN_TIME, name = "event-split")
+@SuppressWarnings("VisibilityModifier")
 public class EventSplitRuntimeConfig {
 
     /**

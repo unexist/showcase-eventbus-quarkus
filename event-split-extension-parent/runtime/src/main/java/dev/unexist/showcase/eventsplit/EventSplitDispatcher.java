@@ -8,7 +8,7 @@
  * This program can be distributed under the terms of the Apache License v2.0.
  * See the file LICENSE for details.
  **/
- 
+
 package dev.unexist.showcase.eventsplit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,15 +34,15 @@ import java.util.Objects;
 @ApplicationScoped
 public class EventSplitDispatcher {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventSplitDispatcher.class);
-    private final static ObjectMapper MAPPER = new ObjectMapper();
-
-    private KafkaConsumer<String, String> consumer;
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Inject
     EventSplitRuntimeConfig runtimeConfig;
 
     @Inject
     EventBus bus;
+
+    private KafkaConsumer<String, String> consumer;
 
     /**
      * Start the dispatcher
@@ -71,7 +71,7 @@ public class EventSplitDispatcher {
         if (null != this.runtimeConfig.topics) {
             this.consumer.subscribe(new HashSet<>(Arrays.asList(this.runtimeConfig.topics.split(","))));
 
-            LOGGER.info("Subscribed to topics: " + this.runtimeConfig.topics);
+            LOGGER.info("Subscribed to topics: {}", this.runtimeConfig.topics);
         }
 
         /* Set up handler */

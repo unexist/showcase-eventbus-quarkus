@@ -8,7 +8,7 @@
  * This program can be distributed under the terms of the Apache License v2.0.
  * See the file LICENSE for details.
  **/
- 
+
 package dev.unexist.showcase.eventsplit;
 
 import io.quarkus.runtime.StartupEvent;
