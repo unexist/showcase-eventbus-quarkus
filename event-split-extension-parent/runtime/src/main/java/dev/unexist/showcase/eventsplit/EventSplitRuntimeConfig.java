@@ -22,13 +22,15 @@ public class EventSplitRuntimeConfig {
      * List of topics to listen to
      **/
 
-    @ConfigItem(name = "topics", defaultValue = "", defaultValueDocumentation = "List of topics")
+    @ConfigItem(name = "topics", defaultValue = "",
+            defaultValueDocumentation = "List of topics")
     public String topics;
 
     /**
      * List of topics to listen to
      **/
 
-    @ConfigItem(name = "broker.server", defaultValue = "localhost:9092", defaultValueDocumentation = "Host of Kafka broker with port")
+    @ConfigItem(name = "broker.server", defaultValue = "localhost:9092",
+            defaultValueDocumentation = "Host of Kafka broker with port")
     public String brokerServer;
 }
