@@ -20,7 +20,7 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 public class EventSplitRuntimeConfig {
 
     /**
-     * List of topics to listen to
+     * List of topics to subscribe
      **/
 
     @ConfigItem(name = "topics", defaultValue = "",
@@ -28,10 +28,10 @@ public class EventSplitRuntimeConfig {
     public String topics;
 
     /**
-     * List of topics to listen to
+     * Address and port of the broker
      **/
 
     @ConfigItem(name = "broker.server", defaultValue = "localhost:9092",
-            defaultValueDocumentation = "Host of Kafka broker with port")
+        defaultValueDocumentation = "Address and port of the Kafka broker")
     public String brokerServer;
 }
