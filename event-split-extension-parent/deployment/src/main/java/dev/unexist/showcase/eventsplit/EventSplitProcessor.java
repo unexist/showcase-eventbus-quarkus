@@ -12,8 +12,15 @@
 package dev.unexist.showcase.eventsplit;
 
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
+import io.quarkus.arc.deployment.BeanArchiveIndexBuildItem;
+import io.quarkus.arc.deployment.BeanContainerBuildItem;
 import io.quarkus.deployment.annotations.BuildStep;
+import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
+import org.jboss.jandex.ClassInfo;
+import org.jboss.jandex.DotName;
+
+import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 
 public class EventSplitProcessor {
     private static final String EVENT_SPLIT = "event-split";
@@ -24,7 +31,25 @@ public class EventSplitProcessor {
     }
 
     @BuildStep
-    AdditionalBeanBuildItem beans() {
-        return new AdditionalBeanBuildItem(EventSplitLifecycle.class, EventSplitDispatcher.class);
+    AdditionalBeanBuildItem registerBeans() {
+        return AdditionalBeanBuildItem.builder()
+                .addBeanClass(EventSplitLifecycle.class)
+                .addBeanClass(EventSplitDispatcher.class)
+                .addBeanClass(EventSplitRegistry.class)
+                .build();
+    }
+
+    @BuildStep
+    @Record(RUNTIME_INIT)
+    void discoverEvents(EventSplitRecorder recorder,
+                        BeanArchiveIndexBuildItem beanArchiveIndex,
+                        BeanContainerBuildItem beanContainer)
+    {
+        beanArchiveIndex.getIndex()
+                .getAllKnownSubclasses(
+                        DotName.createSimple(EventSplitEvent.class.getName())).stream()
+                            .map(ClassInfo::name)
+                            .map(DotName::toString)
+                            .forEach(eventType -> recorder.addEventType(beanContainer.getValue(), eventType));
     }
 }

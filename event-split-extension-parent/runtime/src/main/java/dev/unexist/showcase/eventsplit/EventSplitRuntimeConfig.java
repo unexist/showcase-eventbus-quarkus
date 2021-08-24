@@ -34,4 +34,12 @@ public class EventSplitRuntimeConfig {
     @ConfigItem(name = "broker.server", defaultValue = "localhost:9092",
         defaultValueDocumentation = "Address and port of the Kafka broker")
     public String brokerServer;
+
+    /**
+     * Enable cloudevents
+     **/
+
+    @ConfigItem(name = "cloudevents.enabled", defaultValue = "false",
+        defaultValueDocumentation = "Whether to enable cloudevents")
+    public Boolean useCloudEvents;
 }

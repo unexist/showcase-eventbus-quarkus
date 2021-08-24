@@ -12,12 +12,21 @@
 package dev.unexist.showcase.eventsplit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.common.base.CaseFormat;
+import io.cloudevents.CloudEvent;
+import io.cloudevents.core.CloudEventUtils;
+import io.cloudevents.core.data.PojoCloudEventData;
+import io.cloudevents.jackson.PojoCloudEventDataMapper;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +39,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @ApplicationScoped
 public class EventSplitDispatcher {
@@ -40,9 +50,26 @@ public class EventSplitDispatcher {
     EventSplitRuntimeConfig runtimeConfig;
 
     @Inject
+    EventSplitRegistry registry;
+
+    @Inject
     EventBus bus;
 
-    private KafkaConsumer<String, String> consumer;
+    private final ObjectMapper mapper;
+    private KafkaConsumer<String, ?> consumer;
+
+    /**
+     * Constructor
+     **/
+
+    EventSplitDispatcher() {
+        this.mapper = new ObjectMapper();
+
+        mapper.registerModule(new JavaTimeModule())
+                .registerModule(io.cloudevents.jackson.JsonFormat.getCloudEventJacksonModule())
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     /**
      * Start the dispatcher
@@ -60,7 +87,13 @@ public class EventSplitDispatcher {
 
         consumerConfig.put("bootstrap.servers", this.runtimeConfig.brokerServer);
         consumerConfig.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        consumerConfig.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+
+        if (BooleanUtils.isTrue(this.runtimeConfig.useCloudEvents)) {
+            consumerConfig.put("value.deserializer", "io.cloudevents.kafka.CloudEventDeserializer");
+        } else {
+            consumerConfig.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        }
+
         consumerConfig.put("group.id", "eventSplitGroup");
         consumerConfig.put("auto.offset.reset", "earliest");
         consumerConfig.put("enable.auto.commit", "false");
@@ -75,7 +108,13 @@ public class EventSplitDispatcher {
         }
 
         /* Set up handler */
-        this.consumer.handler(this::handleMessage);
+        this.consumer.handler(record -> {
+            if (BooleanUtils.isTrue(this.runtimeConfig.useCloudEvents)) {
+                this.handleMessageAsCloudEvent((KafkaConsumerRecord<String, CloudEvent>) record);
+            } else {
+                this.handleMessage((KafkaConsumerRecord<String, String>) record);
+            }
+        });
     }
 
     /**
@@ -98,5 +137,35 @@ public class EventSplitDispatcher {
         }
 
         this.bus.send(typeName, record.value());
+    }
+
+    /**
+     * Handle the messages from the consumer
+     *
+     * @param  record  The {@link KafkaConsumerRecord} to handle
+     **/
+
+    private void handleMessageAsCloudEvent(KafkaConsumerRecord<String, CloudEvent> record) {
+        CloudEvent cloudEvent = record.value();
+
+        LOGGER.info("Handle message type {}", cloudEvent.getType());
+
+        Optional<Class<EventSplitEvent>> candidate = this.registry.findType(cloudEvent.getType());
+
+        if (candidate.isPresent()) {
+            PojoCloudEventData<?> cloudEventData = CloudEventUtils.mapData(
+                    cloudEvent,
+                    PojoCloudEventDataMapper.from(this.mapper, candidate.get()));
+
+            if (null != cloudEventData && null != cloudEventData.getValue()) {
+                String typeName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, cloudEvent.getType());
+
+                LOGGER.info("Sent to {}", typeName);
+
+                this.bus.send(typeName, cloudEventData.getValue());
+            }
+        } else {
+            LOGGER.error("Event type {} not found", cloudEvent.getType());
+        }
     }
 }
