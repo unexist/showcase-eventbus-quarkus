@@ -17,5 +17,6 @@
         <module>todo-service</module>
         <module>todo-service-connector</module>
         <module>todo-service-extension</module>
+        <module>todo-service-extension-cloudevents</module>
     </modules>
 </project>
