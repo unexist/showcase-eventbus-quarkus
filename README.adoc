@@ -10,3 +10,4 @@ This project holds a showcase for vert.x eventbus mapping
 - https://stackoverflow.com/questions/66249352/dynamic-programmatically-topic-name-quarkus-smallrye-reactive-messaging-kafka
 - https://vertx.io/docs/vertx-kafka-client/java/#_creating_kafka_clients
 - https://quarkus.io/guides/kafka-dev-services
+- https://github.com/vert-x3/vertx-examples/blob/master/core-examples/src/main/java/io/vertx/example/core/eventbus/messagecodec/util/CustomMessageCodec.java
