@@ -13,13 +13,13 @@ package dev.unexist.showcase.eventsplit;
 
 import io.quarkus.runtime.StartupEvent;
 
-import javax.annotation.Priority;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.DefinitionException;
-import javax.enterprise.inject.spi.DeploymentException;
-import javax.inject.Inject;
-import javax.interceptor.Interceptor;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.DefinitionException;
+import jakarta.enterprise.inject.spi.DeploymentException;
+import jakarta.inject.Inject;
+import jakarta.interceptor.Interceptor;
 
 @Dependent
 public class EventSplitLifecycle {
